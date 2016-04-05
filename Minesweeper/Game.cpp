@@ -1,10 +1,11 @@
 #include "Game.h"
-
-Game::Game()
+Game::Game(Minesweeper *minesweeper)
+:m_game_timer(minesweeper)
 {
 	m_options.show_initial_cell = true;
 	m_options.board_size = Options::BIG;
 	m_options.mine_count = 20;
+	
 }
 void Game::put_mines()
 {
@@ -73,6 +74,7 @@ void Game::pick_initial_cell()
 			{
 				CELLS_X = 8; 
 				CELLS_Y = 8;
+				
 				break;
 			}
 		case Options::SMALL:
@@ -144,8 +146,8 @@ void Game::pick_initial_cell()
 
 		game_is_over = false;
 		put_mines();
-
 		pick_initial_cell();
+		m_game_timer.start();
 	}
 	void Game::draw()
 	{
@@ -222,6 +224,11 @@ void Game::pick_initial_cell()
 	const Options &Game::get_options() const
 	{
 		return m_options;
+	}
+	
+	uint Game::get_seconds_passed()
+	{
+		return m_game_timer.get_tick_count();
 	}
 void Game::set_options(const Options& options)
 {

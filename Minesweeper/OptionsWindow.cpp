@@ -11,7 +11,7 @@ OptionsWindow::OptionsWindow(Options &options)
 
 	m_is_ok_clicked = false;
 	QGroupBox *formGroupBox = new QGroupBox(tr("Options"));
-	QFormLayout *form_layout = new QFormLayout;
+	QFormLayout *form_layout = new QFormLayout; 
 	formGroupBox->setLayout(form_layout);
 
 	m_board_size_combobox = new QComboBox(this);
@@ -60,7 +60,6 @@ void OptionsWindow::ok_clicked()
 	m_options->board_size = (Options::BoardSize)m_board_size_combobox->currentData().toInt();
 	m_options->mine_count = m_mine_count_select->currentData().toInt();
 	m_is_ok_clicked = true;
-
 	close();
 
 }

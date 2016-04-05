@@ -10,7 +10,6 @@ BoardView::BoardView(Game* game)
 void BoardView::paintEvent(QPaintEvent*)
 {
 
-	
 	QPainter p(this);
 //	p.setBrush(QBrush(Qt::green));
 	QPen border_light_pen(Qt::white);
@@ -39,9 +38,6 @@ void BoardView::paintEvent(QPaintEvent*)
 			if (!cell->is_covered)
 			{
 
-				//color = Qt::black;
-				//if (cell->is_mined)
-				//else
 				{
 					if (cell->is_mined)
 					{
@@ -74,4 +70,10 @@ void BoardView::mousePressEvent(QMouseEvent *event)
 			
 	}
 	
+}
+void BoardView::recalculate_size()
+{
+	int width = FIELD_WIDTH*m_game->get_board_width();
+	int height = FIELD_HEIGHT*m_game->get_board_height();
+	this->setFixedSize(width, height);
 }

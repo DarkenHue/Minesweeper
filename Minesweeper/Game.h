@@ -6,8 +6,11 @@
 #include "Cell.h"
 #include "globals.h"
 #include "Options.h"
+#include "GameTimer.h"
 
-class Game
+class Minesweeper; 
+
+class Game 
 {
 private:
 	uint CELLS_X;
@@ -20,9 +23,9 @@ private:
 	Options m_options; 
 	void put_mines();
 	void pick_initial_cell();
-
+	GameTimer m_game_timer;
 public:
-	Game();
+	Game(Minesweeper *m);
 	bool is_game_over();
 	int get_board_width();
 	int get_board_height();
@@ -34,6 +37,6 @@ public:
 	bool is_initial_cell(uint y, uint x);
 	const Options &get_options() const;
 	void set_options(const Options& options);
-
+	uint get_seconds_passed();
 };
 #endif
