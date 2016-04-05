@@ -9,13 +9,11 @@
 
 class Game
 {
-public:
+private:
 	uint CELLS_X;
 	uint CELLS_Y;
 	uint CELLS_N;
 	double mine_percentage;
-private:
-
 	Cell **m_board;
 	Cell* initial_cell;
 	bool game_is_over;
