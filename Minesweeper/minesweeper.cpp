@@ -3,7 +3,6 @@
 #include <QHBoxLayout>
 #include "OptionsWindow.h"
 
-
 Minesweeper::Minesweeper(QWidget *parent)
 :	QMainWindow(parent)
 {
@@ -15,7 +14,8 @@ Minesweeper::Minesweeper(QWidget *parent)
 	m_board = new BoardView(m_game);
 	//layout->addWidget(board);
 	this->setCentralWidget(m_board);
-
+	
+	
 	QMenu *fileMenu;
 
 	fileMenu = menuBar()->addMenu("&Game");
