@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "BoardView.h"
 #include <qlabel>
+#include <Qsettings>
 class Minesweeper : public QMainWindow
 {
 	Q_OBJECT
@@ -19,11 +20,13 @@ private:
 	Game *m_game;
 	BoardView *m_board;
 	QLabel *m_time_label;
+	QWidget *central_widget;
 
 private slots:
 	void new_game();
 	void quit();
 	void option_window();
+	void highscores_window();
 	
 };
 

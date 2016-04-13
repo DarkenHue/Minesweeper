@@ -5,11 +5,15 @@
 #include <QDesktopWidget>
 #include <QSizePolicy>
 #include <QHBoxLayout>
+#include "HighscoreWindow.h"
 Minesweeper::Minesweeper(QWidget *parent)
 :	QMainWindow(parent)
 {
 	this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 	//ui.setupUi(this);
+	QCoreApplication::setOrganizationName("Sawicki");
+	QCoreApplication::setOrganizationDomain("Milan");
+	QCoreApplication::setApplicationName("Minesweeper");
 
 	m_game = new Game(this);
 	m_game->initialize();
@@ -23,7 +27,7 @@ Minesweeper::Minesweeper(QWidget *parent)
 
 	m_board = new BoardView(m_game);
 	m_board->recalculate_size();
-	QWidget *central_widget = new QWidget();
+	central_widget = new QWidget();
 	QVBoxLayout *vertical_layout = new QVBoxLayout();
 	vertical_layout->addItem(time_layout);
 	vertical_layout->addWidget(m_board);
@@ -34,10 +38,19 @@ Minesweeper::Minesweeper(QWidget *parent)
 
 	QMenu *fileMenu;
 	fileMenu = menuBar()->addMenu("&Game");
+
 	QAction *action = new QAction("&New", this);
 	action->setShortcuts(QKeySequence::New);
 	action->setStatusTip(tr("Create a new file"));
 	connect(action, SIGNAL(triggered()), this, SLOT(new_game()));
+	fileMenu->addAction(action);
+
+	action = new QAction("&Options", this);
+	connect(action, SIGNAL(triggered()), this, SLOT(option_window()));
+	fileMenu->addAction(action);
+	
+	action = new QAction("&Highscores", this);
+	connect(action, SIGNAL(triggered()), this, SLOT(highscores_window()));
 	fileMenu->addAction(action);
 
 	action = new QAction("&Quit", this);
@@ -45,15 +58,14 @@ Minesweeper::Minesweeper(QWidget *parent)
 	connect(action, SIGNAL(triggered()), this, SLOT(quit()));
 	fileMenu->addAction(action);
 
-	action = new QAction("&Opcje", this);
-	connect(action, SIGNAL(triggered()), this, SLOT(option_window()));
-	fileMenu->addAction(action);
 	
 
 }
 void Minesweeper::new_game()
 {
+	
 	m_game->start();
+	update_tick_count();
 	m_board->repaint();
 }
 
@@ -76,8 +88,17 @@ void Minesweeper::option_window()
 	{
 		m_game->set_options(options);
 		m_board->recalculate_size();
+		//this->setFixedSize(central_widget->size());
+		//this->setFixedSize(central_widget->maximumSize());
+
 	}
 	delete window;
+}
+void Minesweeper::highscores_window()
+{
+	HighScoreWindow *window = new HighScoreWindow();
+	window->setModal(true);
+	window->exec();
 }
 Minesweeper::~Minesweeper()
 {

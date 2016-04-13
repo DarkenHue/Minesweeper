@@ -12,6 +12,7 @@ void GameTimer::start()
 {
 	m_tick_count = 0;
 	m_timer->start();
+
 }
 void GameTimer::timer_timeout()
 {

@@ -1,0 +1,4 @@
+1. uruchamiaæ timer po pierwszym kliknieciu na plansze
+2. dodac licznik odkrytych pól
+3. dodac obsluge highscores
+

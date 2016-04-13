@@ -5,6 +5,8 @@
 #include <QString>
 #include <qpushbutton>
 #include <QHBoxLayout>
+#include <qsettings>
+#include "Globals.h"
 OptionsWindow::OptionsWindow(Options &options)
 {
 	m_options = &options;
@@ -27,19 +29,19 @@ OptionsWindow::OptionsWindow(Options &options)
 	m_show_initial_cell_checkbox->setChecked(m_options->show_initial_cell);
 
 
-	m_mine_count_select = new QComboBox(this);
-	m_mine_count_select->addItem("10%", 10);
-	m_mine_count_select->addItem("20%", 20);
-	m_mine_count_select->addItem("30%", 30);
-	m_mine_count_select->addItem("40%", 40);
-	m_mine_count_select->addItem("50%", 50);
-	int mine_index = m_mine_count_select->findData(m_options->mine_count);
-	m_mine_count_select->setCurrentIndex(mine_index);
+	m_mine_percentage_select = new QComboBox(this);
+	m_mine_percentage_select->addItem("10%", 10);
+	m_mine_percentage_select->addItem("20%", 20);
+	m_mine_percentage_select->addItem("30%", 30);
+	m_mine_percentage_select->addItem("40%", 40);
+	m_mine_percentage_select->addItem("50%", 50);
+	int mine_index = m_mine_percentage_select->findData(m_options->mine_percentage);
+	m_mine_percentage_select->setCurrentIndex(mine_index);
 
 
 	form_layout->addRow("&Show initial cell", m_show_initial_cell_checkbox);
 	form_layout->addRow("Board size: ", m_board_size_combobox);
-	form_layout->addRow("Difficulty: ", m_mine_count_select);
+	form_layout->addRow("Difficulty: ", m_mine_percentage_select);
 	QVBoxLayout *vbox_layout = new QVBoxLayout;
 	vbox_layout->addWidget(formGroupBox);
 
@@ -56,10 +58,19 @@ OptionsWindow::OptionsWindow(Options &options)
 }
 void OptionsWindow::ok_clicked() 
 {
+	/*
 	m_options->show_initial_cell = m_show_initial_cell_checkbox->checkState();
 	m_options->board_size = (Options::BoardSize)m_board_size_combobox->currentData().toInt();
-	m_options->mine_count = m_mine_count_select->currentData().toInt();
+	m_options->mine_percentage = m_mine_percentage_select->currentData().toInt();
+	*/
+	QSettings settings;
+	settings.beginGroup(QString(game_settings_group_name));
+	settings.setValue(show_initial_cell_option_name, m_show_initial_cell_checkbox->checkState());
+	settings.setValue(mine_percentage_option_name, m_mine_percentage_select->currentData().toInt());
+	settings.setValue(board_size_option_name, m_board_size_combobox->currentData().toInt());
+	settings.endGroup();
 	m_is_ok_clicked = true;
+
 	close();
 
 }

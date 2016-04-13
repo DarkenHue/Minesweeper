@@ -15,7 +15,7 @@ private:
 	bool m_is_ok_clicked;
 	QCheckBox *m_show_initial_cell_checkbox;
 	QComboBox *m_board_size_combobox;
-	QComboBox *m_mine_count_select;
+	QComboBox *m_mine_percentage_select;
 private slots:
 	void ok_clicked();
 	void cancel_clicked();

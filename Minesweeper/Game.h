@@ -24,6 +24,8 @@ private:
 	void put_mines();
 	void pick_initial_cell();
 	GameTimer m_game_timer;
+	uint m_uncovered_cells_count;
+
 public:
 	Game(Minesweeper *m);
 	bool is_game_over();
@@ -37,6 +39,7 @@ public:
 	bool is_initial_cell(uint y, uint x);
 	const Options &get_options() const;
 	void set_options(const Options& options);
+	void toggle_cell_flag(uint x, uint y);
 	uint get_seconds_passed();
 };
 #endif

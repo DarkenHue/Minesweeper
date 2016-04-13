@@ -9,6 +9,7 @@ public:
 	BoardView(Game *game);
 	virtual void paintEvent(QPaintEvent*) override;
 	virtual void mousePressEvent(QMouseEvent *eventPress) override;
+
 	void recalculate_size();
 private:
 	Game* m_game;

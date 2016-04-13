@@ -26,7 +26,7 @@ void BoardView::paintEvent(QPaintEvent*)
 				color = Qt::gray;
 			p.fillRect(x * FIELD_WIDTH, y * FIELD_HEIGHT, FIELD_WIDTH, FIELD_HEIGHT, color);
 			Cell* cell = m_game->get_cell(y, x);
-			if (cell->is_covered)
+			if (cell->is_covered && !cell->is_flaged)
 			{
 				p.setPen(border_light_pen);
 				p.drawLine(x * FIELD_WIDTH, y * FIELD_HEIGHT, x * FIELD_WIDTH + 40, y * FIELD_HEIGHT);
@@ -35,18 +35,24 @@ void BoardView::paintEvent(QPaintEvent*)
 				p.drawLine(x * FIELD_WIDTH + 40 - 1, y * FIELD_HEIGHT, x * FIELD_WIDTH + 40, y * FIELD_HEIGHT + 40 - 1);
 				p.drawLine(x * FIELD_WIDTH, y * FIELD_HEIGHT + 40 - 1, x * FIELD_WIDTH + 40 - 1, y * FIELD_HEIGHT + 40 - 1);
 			}
+			if (cell->is_flaged)
+			{
+				color = Qt::green;
+				p.fillRect(x * FIELD_WIDTH, y * FIELD_HEIGHT, FIELD_WIDTH, FIELD_HEIGHT, color);
+			}
 			if (!cell->is_covered)
 			{
-
+				
+				
+				if (cell->is_mined)
 				{
-					if (cell->is_mined)
-					{
-						p.fillRect(x*FIELD_WIDTH, y*FIELD_HEIGHT,FIELD_WIDTH, FIELD_HEIGHT, Qt::red);
-					}
-					else if (cell->mined_neighbour_count!=0)
-						p.drawText(x * FIELD_WIDTH, y * FIELD_HEIGHT, 40, 40, Qt::AlignCenter, QString::number(cell->mined_neighbour_count));
-						
+					color = Qt::red;
+					p.fillRect(x * FIELD_WIDTH, y * FIELD_HEIGHT, FIELD_WIDTH, FIELD_HEIGHT, color);
 				}
+				else if (cell->mined_neighbour_count!=0)
+					p.drawText(x * FIELD_WIDTH, y * FIELD_HEIGHT, 40, 40, Qt::AlignCenter, QString::number(cell->mined_neighbour_count));
+						
+				
 					
 			}
 			
@@ -55,11 +61,12 @@ void BoardView::paintEvent(QPaintEvent*)
 }
 void BoardView::mousePressEvent(QMouseEvent *event)
 {
+	QPoint pos = event->pos();
+	int x = pos.x() / FIELD_WIDTH;
+	int y = pos.y() / FIELD_HEIGHT;
+
 	if (event->button() == Qt::LeftButton && !m_game->is_game_over())
 	{
-		QPoint pos = event->pos();
-		int x = pos.x() / FIELD_WIDTH;
-		int y = pos.y() / FIELD_HEIGHT;
 		if (x >= 0 && y >= 0 && x <= m_game->get_board_width() && y <= m_game->get_board_height())
 		{
 			m_game->uncover_cell(y, x);
@@ -67,10 +74,20 @@ void BoardView::mousePressEvent(QMouseEvent *event)
 			if (m_game->is_game_over())
 				QMessageBox::information(this, "Mina!", "Koniec gry.");
 		}
-			
+
 	}
-	
+	else if (event->button() == Qt::RightButton && !m_game->is_game_over())
+	{
+		if (x >= 0 && y >= 0 && x <= m_game->get_board_width() && y <= m_game->get_board_height())
+		{
+			m_game->toggle_cell_flag(x, y);
+			repaint();
+		}
+		
+	}
+
 }
+
 void BoardView::recalculate_size()
 {
 	int width = FIELD_WIDTH*m_game->get_board_width();

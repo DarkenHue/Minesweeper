@@ -17,7 +17,7 @@ public:
 	void start();
 	void stop();
 	uint get_tick_count();
-	private slots:
+private slots:
 	void timer_timeout();
 	
 };

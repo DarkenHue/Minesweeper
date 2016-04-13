@@ -7,6 +7,6 @@ struct Options {
 		TINY, SMALL, MEDIUM, BIG, HUGE
 	};
 	BoardSize board_size;
-	int mine_count;
+	int mine_percentage;
 };
 #endif
